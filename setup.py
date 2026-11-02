@@ -18,7 +18,7 @@ setup(
     },
     python_requires=">=3.12.12",
     install_requires=[
-        "raylib==5.5",
+        "raylib==5.5.0.4",
         "numpy==1.26.4",
         "pygltflib==1.16.5",
         "pyscreenrec==0.6",
