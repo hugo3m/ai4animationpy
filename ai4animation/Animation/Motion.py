@@ -5,6 +5,7 @@
 import os
 
 import numpy as np
+
 from ai4animation.Animation.Hierarchy import Hierarchy
 from ai4animation.Math import Quaternion, Tensor, Transform, Vector3
 

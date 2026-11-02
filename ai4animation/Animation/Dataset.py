@@ -9,7 +9,7 @@ from ai4animation.Animation.Motion import Motion
 
 class Dataset:
     class Instance:
-        __slots__ = ("Motion", "Index")
+        __slots__ = ("Index", "Motion")
 
         def __init__(self, motion, index):
             self.Motion = motion

@@ -1,8 +1,9 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
+
 from ai4animation.AI.Library import Defaults, Losses
 from ai4animation.AI.Library.Blocks import LinearBlock, SpaceTimeBlock
 from ai4animation.AI.Library.Statistics import RunningStatistics
@@ -19,7 +20,7 @@ class Model(nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(Model, self).__init__()
+        super().__init__()
 
         self.Statistics = RunningStatistics(feature_dim)
 

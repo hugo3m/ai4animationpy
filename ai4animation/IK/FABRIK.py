@@ -2,7 +2,6 @@
 
 """FABRIK (Forward And Backward Reaching Inverse Kinematics) solver."""
 
-from typing import List, Optional
 
 from ai4animation.Animation.Skeleton import Skeleton
 from ai4animation.Math import Tensor, Transform, Vector3
@@ -11,7 +10,7 @@ from ai4animation.Math import Tensor, Transform, Vector3
 class FABRIK:
     def __init__(self, skeleton: Skeleton, source_name: str, target_name: str):
         self.Skeleton = skeleton
-        self.BoneIndices: List[int] = skeleton.Hierarchy.GetChainIndices(
+        self.BoneIndices: list[int] = skeleton.Hierarchy.GetChainIndices(
             source_name, target_name
         )
         self.Root = None
@@ -143,8 +142,8 @@ class FABRIK:
             FK=True,
         )
 
-    def FirstBoneIndex(self) -> Optional[int]:
+    def FirstBoneIndex(self) -> int | None:
         return self.BoneIndices[0] if self.BoneIndices else None
 
-    def LastBoneIndex(self) -> Optional[int]:
+    def LastBoneIndex(self) -> int | None:
         return self.BoneIndices[-1] if self.BoneIndices else None

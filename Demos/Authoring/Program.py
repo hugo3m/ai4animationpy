@@ -2,9 +2,10 @@
 
 import math
 
-from ai4animation import AI4Animation, Tensor, Time, Transform, Vector3
 from MotionController import MotionController
 from PathPlanner3D import PathPlanner3D
+
+from ai4animation import AI4Animation, Tensor, Time, Transform, Vector3
 
 CENTER = (0.0, 1.0, 0.0)
 SIZE = (10.0, 2.0, 10.0)

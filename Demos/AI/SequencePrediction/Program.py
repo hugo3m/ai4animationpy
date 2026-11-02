@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 import torch
+
 from ai4animation import (
     AI4Animation,
     CosineAnnealingOptimizer,

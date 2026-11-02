@@ -4,6 +4,7 @@ import os
 import re
 
 import numpy as np
+
 from ai4animation.Animation.Hierarchy import Hierarchy
 from ai4animation.Animation.Motion import Motion
 from ai4animation.Math import Rotation, Tensor, Transform

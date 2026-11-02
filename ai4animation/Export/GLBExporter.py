@@ -7,11 +7,12 @@ joint per frame). The exporter converts them into LOCAL TRS values per node,
 which is what glTF animation channels require.
 """
 
-from typing import List, Optional, Sequence
+from collections.abc import Sequence
 
 import numpy as np
 from numpy.typing import NDArray
 from pygltflib import (
+    GLTF2,
     Accessor,
     Animation,
     AnimationChannel,
@@ -21,13 +22,11 @@ from pygltflib import (
     Attributes,
     Buffer,
     BufferView,
-    GLTF2,
     Mesh,
     Node,
     Primitive,
     Scene,
 )
-
 
 # glTF component type constants.
 _COMPONENT_FLOAT = 5126
@@ -73,7 +72,7 @@ def _quat_rotate(q: NDArray, v: NDArray) -> NDArray:
 def _world_to_local(
     world_positions: NDArray,
     world_rotations: NDArray,
-    parent_indices: Sequence[Optional[int]],
+    parent_indices: Sequence[int | None],
 ) -> tuple[NDArray, NDArray]:
     """Convert world TR per joint to local TR per joint.
 
@@ -117,10 +116,10 @@ class _BufferBuilder:
 
     def __init__(self) -> None:
         self.data = bytearray()
-        self.buffer_views: List[BufferView] = []
-        self.accessors: List[Accessor] = []
+        self.buffer_views: list[BufferView] = []
+        self.accessors: list[Accessor] = []
 
-    def _add_view(self, byte_length: int, target: Optional[int] = None) -> int:
+    def _add_view(self, byte_length: int, target: int | None = None) -> int:
         offset = len(self.data) - byte_length
         view = BufferView(
             buffer=0, byteOffset=offset, byteLength=byte_length, target=target
@@ -150,7 +149,7 @@ class _BufferBuilder:
         self,
         values: NDArray,
         components: int,
-        target: Optional[int] = None,
+        target: int | None = None,
         with_minmax: bool = False,
     ) -> int:
         assert values.shape[-1] == components
@@ -202,9 +201,9 @@ def _cube_geometry(size: float) -> tuple[NDArray, NDArray, NDArray]:
         ((0, 1, 0), [(-s, s, s), (s, s, s), (s, s, -s), (-s, s, -s)]),  # +Y
         ((0, -1, 0), [(-s, -s, -s), (s, -s, -s), (s, -s, s), (-s, -s, s)]),  # -Y
     ]
-    positions: List[List[float]] = []
-    normals: List[List[float]] = []
-    indices: List[int] = []
+    positions: list[list[float]] = []
+    normals: list[list[float]] = []
+    indices: list[int] = []
     for normal, corners in face_data:
         base = len(positions)
         for corner in corners:
@@ -222,7 +221,7 @@ def _validate_export_inputs(
     positions: NDArray,
     rotations: NDArray,
     bone_names: Sequence[str],
-    parent_indices: Sequence[Optional[int]],
+    parent_indices: Sequence[int | None],
     fps: float,
 ) -> None:
     if positions.ndim != 3 or positions.shape[-1] != 3:
@@ -246,19 +245,19 @@ def _validate_export_inputs(
 
 def _build_nodes(
     bone_names: Sequence[str],
-    parents: Sequence[Optional[int]],
+    parents: Sequence[int | None],
     local_positions: NDArray,
     local_rotations: NDArray,
-) -> tuple[List[Node], List[int]]:
+) -> tuple[list[Node], list[int]]:
     num_joints = len(parents)
-    children_of: List[List[int]] = [[] for _ in range(num_joints)]
-    roots: List[int] = []
+    children_of: list[list[int]] = [[] for _ in range(num_joints)]
+    roots: list[int] = []
     for j, p in enumerate(parents):
         if p is None:
             roots.append(j)
         else:
             children_of[p].append(j)
-    nodes: List[Node] = []
+    nodes: list[Node] = []
     for j in range(num_joints):
         nodes.append(
             Node(
@@ -301,8 +300,8 @@ def _build_animation(
     timestamps = np.arange(num_frames, dtype=np.float32) / float(fps)
     time_accessor = builder.add_scalar_float(timestamps)
 
-    samplers: List[AnimationSampler] = []
-    channels: List[AnimationChannel] = []
+    samplers: list[AnimationSampler] = []
+    channels: list[AnimationChannel] = []
     for j in range(num_joints):
         t_acc = builder.add_vec_float(local_positions[:, j], 3)
         r_acc = builder.add_vec_float(local_rotations[:, j], 4)
@@ -337,10 +336,10 @@ class GLBExporter:
         positions: NDArray,
         rotations: NDArray,
         bone_names: Sequence[str],
-        parent_indices: Sequence[Optional[int]],
+        parent_indices: Sequence[int | None],
         out_path: str,
         fps: float,
-        animation_name: Optional[str] = None,
+        animation_name: str | None = None,
         joint_boxes: bool = True,
         box_size: float = 0.05,
     ) -> GLTF2:
@@ -383,7 +382,7 @@ class GLBExporter:
         builder = _BufferBuilder()
 
         # Optional: build one shared cube mesh referenced by every joint node.
-        meshes: List[Mesh] = []
+        meshes: list[Mesh] = []
         if joint_boxes:
             meshes.append(_build_joint_box_mesh(builder, box_size))
             for node in nodes:

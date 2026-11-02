@@ -28,7 +28,7 @@ class Module(ABC):
                 "Standalone initialization skipped for %s", type(self).__name__
             )
 
-    def Initialize(self):  # noqa: B027
+    def Initialize(self):
         pass
 
     def GetName(self) -> str:

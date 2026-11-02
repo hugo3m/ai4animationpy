@@ -6,7 +6,7 @@ __version__ = "1.0.0"
 
 # Subpackages (import modules/packages, not classes yet to avoid circular imports)
 # Core utility modules (no dependencies on other package modules)
-from . import AI, Animation, Components, IK, Import, Math, Time, Utility
+from . import AI, IK, Animation, Components, Import, Math, Time, Utility
 
 # AI modules
 from .AI import DataSampler, FeedTensor, Generators, Plotting, ReadTensor

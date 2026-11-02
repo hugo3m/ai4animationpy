@@ -3,13 +3,12 @@
 import multiprocessing
 import os
 import sys
-from concurrent.futures import as_completed, ProcessPoolExecutor
-from typing import List, Optional
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+from tqdm import tqdm
 
 from ai4animation import Utility
 from ai4animation.Animation.Motion import Motion
-from ai4animation.Math import Vector3
-from tqdm import tqdm
 
 
 class BatchConverter:
@@ -21,7 +20,7 @@ class BatchConverter:
         self,
         input_directory: str,
         output_directory: str = None,
-        max_workers: Optional[int] = None,
+        max_workers: int | None = None,
     ):
         self.input_directory = input_directory
         self.output_directory = (
@@ -36,7 +35,7 @@ class BatchConverter:
         self,
         bone_names,
         scale=1.0,
-    ) -> List[str]:
+    ) -> list[str]:
         files = self.FindFiles()
         if not files:
             print(f"No GLB, FBX, or BVH files found in {self.input_directory}")
@@ -127,7 +126,7 @@ class BatchConverter:
             print(f"Error processing {filename}: {e}")
             return (filename, None, False, str(e))
 
-    def FindFiles(self) -> List[str]:
+    def FindFiles(self) -> list[str]:
         """Find all supported files (GLB, FBX, and BVH) in the input directory."""
         found_files = []
 
@@ -141,15 +140,15 @@ class BatchConverter:
                     found_files.append(relative_path)
         return sorted(found_files)
 
-    def FindGLBs(self) -> List[str]:
+    def FindGLBs(self) -> list[str]:
         """Find GLB files only (for backwards compatibility)."""
         return [f for f in self.FindFiles() if f.lower().endswith(".glb")]
 
-    def FindFBXs(self) -> List[str]:
+    def FindFBXs(self) -> list[str]:
         """Find FBX files only."""
         return [f for f in self.FindFiles() if f.lower().endswith(".fbx")]
 
-    def FindBVHs(self) -> List[str]:
+    def FindBVHs(self) -> list[str]:
         """Find BVH files only."""
         return [f for f in self.FindFiles() if f.lower().endswith(".bvh")]
 
@@ -159,7 +158,7 @@ def Run(
     output_dir: str = None,
     bone_names=None,
     scale=1.0,
-) -> List[str]:
+) -> list[str]:
     converter = BatchConverter(
         input_dir, output_dir, max_workers=Utility.GetNumWorkers()
     )

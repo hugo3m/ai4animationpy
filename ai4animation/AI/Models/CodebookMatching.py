@@ -1,12 +1,12 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 import torch
-import torch.nn as nn
+from torch import nn
+
 from ai4animation.AI.Library import Losses
 from ai4animation.AI.Library.Blocks import FiLMLinearBlock, LinearBlock, SpaceTimeBlock
 from ai4animation.AI.Library.Layers import CodebookLayer
 from ai4animation.AI.Library.Statistics import RunningStatistics
-from ai4animation.AI.Models import MultiLayerPerceptron
 
 
 # Codebook Matching Model
@@ -16,7 +16,7 @@ class Model(nn.Module):
         prior,
         sampler,
     ):
-        super(Model, self).__init__()
+        super().__init__()
         self.Prior = prior
         self.Sampler = sampler
 
@@ -59,7 +59,7 @@ class Model(nn.Module):
 # Codebook Matching Prior
 class Prior(nn.Module):
     def __init__(self, encoder, decoder, codebook):
-        super(Prior, self).__init__()
+        super().__init__()
         self.Encoder = encoder
         self.Decoder = decoder
         self.Codebook = codebook
@@ -138,7 +138,7 @@ class Sampler(nn.Module):
         dropout,
         learn_denoiser=True,
     ):
-        super(Sampler, self).__init__()
+        super().__init__()
         self.Projector = LinearBlock(
             feature_dim,
             codebook_channels * codebook_classes,
@@ -237,7 +237,7 @@ class DensePrior(Prior):
         codebook_classes,
         dropout,
     ):
-        super(DensePrior, self).__init__(
+        super().__init__(
             encoder=LinearBlock(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -265,7 +265,7 @@ class SequentialPrior(Prior):
         codebook_classes,
         dropout,
     ):
-        super(SequentialPrior, self).__init__(
+        super().__init__(
             encoder=SpaceTimeBlock(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -329,7 +329,7 @@ class DenseModel(Model):
         dropout,
         learn_denoiser=True,
     ):
-        super(DenseModel, self).__init__(
+        super().__init__(
             prior=DensePrior(
                 output_dim,
                 encoder_dim,
@@ -365,7 +365,7 @@ class SequentialModel(Model):
         dropout,
         learn_denoiser=True,
     ):
-        super(SequentialModel, self).__init__(
+        super().__init__(
             prior=SequentialPrior(
                 sequence_length,
                 output_dim,
@@ -450,7 +450,7 @@ def ToyExample1():
     axes = figure.subplots(1, 3)
     for e in range(1, EPOCH_COUNT + 1, 1):
         print("Epoch", e)
-        for i in range(0, BATCH_COUNT):
+        for i in range(BATCH_COUNT):
             print("Progress", round(100 * i / BATCH_COUNT, 2), "%", end="\r")
 
             X, Y = generate_data(BATCH_SIZE, min, max)
@@ -570,7 +570,7 @@ def ToyExample2():
     axes = figure.subplots(1, 3 + ITERATIONS)
     for e in range(1, EPOCH_COUNT + 1, 1):
         print("Epoch", e)
-        for i in range(0, BATCH_COUNT):
+        for i in range(BATCH_COUNT):
             print("Progress", round(100 * i / BATCH_COUNT, 2), "%", end="\r")
 
             X, Y = generate_data(BATCH_SIZE, noise)

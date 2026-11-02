@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 import numpy as np
+
 from ai4animation import Actor, AI4Animation, Rotation, Transform, Utility
 
 SCRIPT_DIR = Path(__file__).parent

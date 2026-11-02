@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from ai4animation import Actor, AI4Animation, Rotation, Tensor, Time, Utility, Vector3
+from ai4animation import Actor, AI4Animation, Rotation, Time, Utility, Vector3
 
 SCRIPT_DIR = Path(__file__).parent
 ASSETS_PATH = str(SCRIPT_DIR.parent / "_ASSETS_/Cranberry")

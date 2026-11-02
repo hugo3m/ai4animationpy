@@ -5,21 +5,22 @@ from io import BytesIO
 
 import cffi
 import numpy as np
-from ai4animation.AI4Animation import AI4Animation
-from ai4animation.Math import Tensor, Transform
-from pyray import load_model_from_mesh, Matrix, Mesh
+from pyray import Matrix, Mesh, load_model_from_mesh
 from raylib import (
+    MATERIAL_MAP_DIFFUSE,
+    RAYWHITE,
+    WHITE,
     LoadImageFromMemory,
     LoadTextureFromImage,
-    MATERIAL_MAP_DIFFUSE,
     MatrixIdentity,
     MemAlloc,
-    RAYWHITE,
     SetMaterialTexture,
     UnloadImage,
     UploadMesh,
-    WHITE,
 )
+
+from ai4animation.AI4Animation import AI4Animation
+from ai4animation.Math import Tensor, Transform
 
 ffi = cffi.FFI()
 

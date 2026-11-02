@@ -1,7 +1,6 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
 
 import numpy as np
 
@@ -67,11 +66,11 @@ class ModelImporter(ABC):
 
     @property
     @abstractmethod
-    def JointNames(self) -> List[str]: ...
+    def JointNames(self) -> list[str]: ...
 
     @property
     @abstractmethod
-    def JointParents(self) -> List[str]: ...
+    def JointParents(self) -> list[str]: ...
 
     @property
     @abstractmethod
@@ -79,8 +78,8 @@ class ModelImporter(ABC):
 
     @property
     @abstractmethod
-    def Meshes(self) -> List[Mesh]: ...
+    def Meshes(self) -> list[Mesh]: ...
 
     @property
     @abstractmethod
-    def Skin(self) -> Optional[Skin]: ...
+    def Skin(self) -> Skin | None: ...

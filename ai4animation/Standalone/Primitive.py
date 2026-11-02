@@ -1,6 +1,7 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 import raylib as rl
+
 from ai4animation import AI4Animation, MeshRenderer
 
 RESOLUTION = 30

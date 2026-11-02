@@ -3,10 +3,12 @@
 import math
 
 import raylib as rl
+from raylib.colors import BLACK, BLUE, GREEN, RED, WHITE
+
 from ai4animation import Utility
 from ai4animation.AI4Animation import AI4Animation
-from ai4animation.Math import Tensor, Transform as t, Vector3
-from raylib.colors import BLACK, BLUE, GREEN, RED, WHITE
+from ai4animation.Math import Tensor, Vector3
+from ai4animation.Math import Transform as t
 
 
 def ScreenWidth():

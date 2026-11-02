@@ -5,6 +5,7 @@
 import os
 
 import numpy as np
+
 from ai4animation.AI4Animation import AI4Animation, Utility
 from ai4animation.Animation.Module import Module
 from ai4animation.Animation.Motion import Motion

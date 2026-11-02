@@ -6,8 +6,9 @@ import warnings
 from collections import deque
 
 import matplotlib.pyplot as plt
-from ai4animation.AI.Library.Statistics import WelfordStatistics
 from sklearn.decomposition import PCA
+
+from ai4animation.AI.Library.Statistics import WelfordStatistics
 
 
 def CreateFigure(title=None, figsize=None):

@@ -1,6 +1,7 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
-import torch.nn as nn
+from torch import nn
+
 from ai4animation.AI.Library import Defaults, Losses
 from ai4animation.AI.Library.Blocks import LinearBlock
 from ai4animation.AI.Library.Layers import CodebookLayer
@@ -19,7 +20,7 @@ class Model(nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(Model, self).__init__()
+        super().__init__()
 
         self.InputStatistics = RunningStatistics(input_dim)
         self.OutputStatistics = RunningStatistics(output_dim)

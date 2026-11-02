@@ -14,12 +14,12 @@ SCRIPT_DIR = Path(__file__).parent
 ASSETS_PATH = str(SCRIPT_DIR.parent.parent / "_ASSETS_/Quadruped")
 
 from ai4animation import (
+    PID,
     Actor,
     AI4Animation,
     FeedTensor,
     GuidanceModule,
     MotionModule,
-    PID,
     ReadTensor,
     RootModule,
     Rotation,

@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 from ai4animation import AI4Animation, Tensor, Vector3
 

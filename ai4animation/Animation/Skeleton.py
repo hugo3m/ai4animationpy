@@ -3,6 +3,7 @@
 """Scene-independent skeleton with bone hierarchy, transforms, and velocities."""
 
 import numpy as np
+
 from ai4animation.Math import Quaternion, Rotation, Tensor, Transform, Vector3
 
 

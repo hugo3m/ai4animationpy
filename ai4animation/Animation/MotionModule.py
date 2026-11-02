@@ -3,13 +3,13 @@
 """Module for extracting per-bone motion features (positions, rotations, velocities)."""
 
 import numpy as np
+
 from ai4animation import Utility
 from ai4animation.AI4Animation import AI4Animation
 from ai4animation.Animation.Module import Module
 from ai4animation.Animation.Motion import Motion
-from ai4animation.Animation.RootModule import RootModule
 from ai4animation.Animation.TimeSeries import TimeSeries
-from ai4animation.Math import Quaternion, Rotation, Tensor, Transform, Vector3
+from ai4animation.Math import Rotation, Tensor, Transform, Vector3
 
 MAX_SMOOTHING = 2.0
 MIN_POWER = 0.0

@@ -2,6 +2,7 @@
 
 import pyray as pr
 import raylib as rl
+
 from ai4animation.AI4Animation import AI4Animation
 from ai4animation.Components.Component import Component
 from ai4animation.Math import Rotation, Transform, Vector3

@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 import numpy as np
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.nn.parameter import Parameter
 
 
@@ -59,7 +59,7 @@ calculate-a-running-standard-deviation>
     """
 
     def __init__(self, dim, n=0.0, m=None, s=None, id=None):
-        super(RunningStatistics, self).__init__()
+        super().__init__()
 
         self.Active = False  # Flag to check if the statistics have been updated
 

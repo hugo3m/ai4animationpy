@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 
 import pyscreenrec
+
 from ai4animation import Time
 from ai4animation.AI4Animation import AI4Animation
 from ai4animation.Components.Component import Component
@@ -47,7 +48,7 @@ class VideoRecorder(Component):
             print(f"Started Video Recording: {full_path}")
 
         except Exception as e:
-            print(f"VideoRecorder Error: Failed to start recording - {str(e)}")
+            print(f"VideoRecorder Error: Failed to start recording - {e!s}")
             self.Instance = None
             self.IsRecording = False
 

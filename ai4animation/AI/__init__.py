@@ -6,9 +6,9 @@ from .FeedTensor import FeedTensor
 from .ReadTensor import ReadTensor
 
 __all__ = [
-    "Plotting",
-    "Generators",
     "DataSampler",
     "FeedTensor",
+    "Generators",
+    "Plotting",
     "ReadTensor",
 ]

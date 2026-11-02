@@ -4,12 +4,13 @@
 
 import os
 import threading
-from collections import deque, OrderedDict
-from concurrent.futures import as_completed, ThreadPoolExecutor
+from collections import OrderedDict, deque
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import numpy as np
-from ai4animation import Utility
 from tqdm import tqdm
+
+from ai4animation import Utility
 
 
 class LRUCache:

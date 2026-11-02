@@ -1,6 +1,7 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 import torch
+
 from ai4animation.AI.Library import Defaults
 from ai4animation.AI.Library.Layers import FiLMLinearLayer, LinearLayer
 from ai4animation.AI.Library.Statistics import RunningStatistics
@@ -16,7 +17,7 @@ class LinearBlock(torch.nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(LinearBlock, self).__init__()
+        super().__init__()
 
         self.L1 = LinearLayer(input_size, hidden_size, dropout, activation)
         self.L2 = LinearLayer(hidden_size, hidden_size, dropout, activation)
@@ -46,7 +47,7 @@ class SequentialBlock(torch.nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(SequentialBlock, self).__init__()
+        super().__init__()
 
         self.SequenceLength = sequence_length
         self.SequenceStatistics = RunningStatistics(1)
@@ -91,7 +92,7 @@ class SpaceTimeBlock(torch.nn.Module):
         target_length,
         dropout,
     ):
-        super(SpaceTimeBlock, self).__init__()
+        super().__init__()
         self.Space = LinearBlock(input_dim, output_dim, hidden_dim, dropout)
         self.Time = LinearBlock(source_length, target_length, hidden_dim, dropout)
 
@@ -119,7 +120,7 @@ class FiLMLinearBlock(torch.nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(FiLMLinearBlock, self).__init__()
+        super().__init__()
 
         self.L1 = FiLMLinearLayer(
             input_size, hidden_size, film_size, dropout, activation

@@ -98,7 +98,7 @@ class CyclicLRWithRestarts(_LRScheduler):
         triangular_step=0.5,
     ):
         if not isinstance(optimizer, Optimizer):
-            raise TypeError("{} is not an Optimizer".format(type(optimizer).__name__))
+            raise TypeError(f"{type(optimizer).__name__} is not an Optimizer")
 
         self.optimizer = optimizer
 
@@ -111,8 +111,8 @@ class CyclicLRWithRestarts(_LRScheduler):
                 if "initial_lr" not in group:
                     raise KeyError(
                         "param 'initial_lr' is not specified "
-                        "in param_groups[{}] when resuming an"
-                        " optimizer".format(i)
+                        f"in param_groups[{i}] when resuming an"
+                        " optimizer"
                     )
 
         self.base_lrs = [group["initial_lr"] for group in optimizer.param_groups]
@@ -198,7 +198,7 @@ class CyclicLRWithRestarts(_LRScheduler):
         if self.t_epoch % self.restart_period < self.t_epoch:
             if self.verbose:
                 print(
-                    "Restart {} at epoch {}".format(self.restarts + 1, self.last_epoch)
+                    f"Restart {self.restarts + 1} at epoch {self.last_epoch}"
                 )
             self.restart_period = math.ceil(self.restart_period * self.t_mult)
             self.restarts += 1

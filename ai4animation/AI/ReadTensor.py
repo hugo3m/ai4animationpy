@@ -3,6 +3,7 @@
 """Tensor reader for incrementally consuming neural network output values."""
 
 import torch
+
 from ai4animation.Math import Rotation, Tensor, Transform, Vector3
 
 

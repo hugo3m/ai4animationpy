@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 import torch
+
 from ai4animation import (
     Actor,
     AI4Animation,
@@ -112,7 +113,7 @@ class Program:
     def Update(self):
         try:
             next(self.Trainer)
-        except StopIteration as e:
+        except StopIteration:
             pass
 
     def Training(self):

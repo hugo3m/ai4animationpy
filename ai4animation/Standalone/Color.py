@@ -2,6 +2,7 @@
 
 import numpy as np
 import raylib as rl
+
 from ai4animation import Utility
 
 

@@ -4,6 +4,7 @@ import builtins
 
 import numpy as np
 import raylib as rl
+
 from ai4animation import Time, Utility
 from ai4animation.AI4Animation import AI4Animation
 from ai4animation.Math import Rotation, Vector3

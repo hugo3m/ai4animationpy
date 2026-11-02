@@ -4,16 +4,16 @@ import struct
 from enum import Enum
 from functools import cached_property, lru_cache
 from io import BytesIO
-from typing import Dict, List, Tuple
 
 import numpy as np
+from numpy.typing import NDArray
+from PIL import Image
+from pygltflib import GLTF2, Accessor, Primitive
+
 from ai4animation.Animation.Hierarchy import Hierarchy
 from ai4animation.Animation.Motion import Motion
 from ai4animation.Import.ModelImporter import Mesh, ModelImporter, Skin
 from ai4animation.Math import Quaternion, Tensor, Transform, Vector3
-from numpy.typing import NDArray
-from PIL import Image
-from pygltflib import Accessor, GLTF2, Primitive
 
 
 class ComponentType(Enum):
@@ -151,7 +151,7 @@ def parse_from_accessor(accessor: Accessor, gltf: GLTF2) -> NDArray:
     return result
 
 
-def parse_texcoords(primitive: Primitive, glb: GLTF2) -> Dict[int, NDArray]:
+def parse_texcoords(primitive: Primitive, glb: GLTF2) -> dict[int, NDArray]:
     if not hasattr(primitive.attributes, "TEXCOORD_0"):
         return {}
     it = 0
@@ -172,8 +172,8 @@ def parse_texcoords(primitive: Primitive, glb: GLTF2) -> Dict[int, NDArray]:
 
 
 def parse_material(
-    primitive: Primitive, glb: GLTF2, image_cache: Dict[int, Image.Image]
-) -> Tuple[int, Image.Image]:
+    primitive: Primitive, glb: GLTF2, image_cache: dict[int, Image.Image]
+) -> tuple[int, Image.Image]:
     default_image = Image.new("RGBA", (1, 1), color=(255, 255, 255, 255))
     material_id = primitive.material
 
@@ -218,10 +218,10 @@ def parse_material(
 
 def parse_joint_indices_and_weights(
     primitive: Primitive, glb: GLTF2
-) -> Tuple[NDArray, NDArray]:
+) -> tuple[NDArray, NDArray]:
     if (
         not hasattr(primitive.attributes, "JOINTS_0")
-        or getattr(primitive.attributes, "JOINTS_0") is None
+        or primitive.attributes.JOINTS_0 is None
     ):
         skin_joint_indices = np.empty((0, 4), dtype=np.int64)
         joint_weights = np.empty((0, 4), dtype=np.float32)
@@ -333,9 +333,9 @@ class GLB(ModelImporter):
         return Skin(inverse_bind_mats, joints)
 
     @cached_property
-    def Meshes(self) -> List[Mesh]:
+    def Meshes(self) -> list[Mesh]:
         meshes = []
-        images: Dict[int, Image.Image] = {}
+        images: dict[int, Image.Image] = {}
         # print("Mesh Count: ", len(self._glb.meshes))
         for mesh_obj in self._glb.meshes:
             assert len(mesh_obj.primitives) >= 1
@@ -392,7 +392,7 @@ class GLB(ModelImporter):
         return meshes
 
     @cached_property
-    def _nodes(self) -> List[Node]:
+    def _nodes(self) -> list[Node]:
         child_to_parent = {}
         for i, node in enumerate(self._glb.nodes):
             for child in node.children:
@@ -412,11 +412,11 @@ class GLB(ModelImporter):
         return nodes
 
     @cached_property
-    def _nodeNames(self) -> List[str]:
+    def _nodeNames(self) -> list[str]:
         return [node.Name or None for node in self._nodes]
 
     @cached_property
-    def _nodeParentNames(self) -> List[str]:
+    def _nodeParentNames(self) -> list[str]:
         return [
             self._nodes[node.Parent].Name if node.Parent is not None else None
             for node in self._nodes
@@ -435,11 +435,11 @@ class GLB(ModelImporter):
         return global_matrices
 
     @cached_property
-    def JointNames(self) -> List[str]:
+    def JointNames(self) -> list[str]:
         return [self._nodeNames[joint_idx] or None for joint_idx in self.Skin.Joints]
 
     @cached_property
-    def JointParents(self) -> List[str]:
+    def JointParents(self) -> list[str]:
         return [
             self._nodeParentNames[joint_idx] or None for joint_idx in self.Skin.Joints
         ]
@@ -449,12 +449,12 @@ class GLB(ModelImporter):
         return self._nodeGlobalMatrices[self.Skin.Joints]
 
     @cached_property
-    def _animations(self) -> List[Animation]:
+    def _animations(self) -> list[Animation]:
         if len(self._glb.animations) == 0:  # no animation
             print("No animation found in " + self._path)
             return []
 
-        animations: List[Animation] = []
+        animations: list[Animation] = []
         glb_anim = self._glb.animations[0]  # only handles first animation for now
         # print("Animation[0]: ", glb_anim.name)
 
@@ -611,7 +611,7 @@ class GLB(ModelImporter):
         print(f"Number of skinned meshes: {len(glb.Meshes)}")
         skinnedMesh = glb.Meshes[-1]  # Last mesh (the one being used)
 
-        print(f"\nSkinned Mesh Data:")
+        print("\nSkinned Mesh Data:")
         print(f"  Vertices shape: {skinnedMesh.Vertices.shape}")
         print(f"  Normals shape: {skinnedMesh.Normals.shape}")
         print(f"  Triangles shape: {skinnedMesh.Triangles.shape}")
@@ -620,12 +620,12 @@ class GLB(ModelImporter):
 
         # Check skin data
         skin_data = glb.Skin
-        print(f"\nSkin Data:")
+        print("\nSkin Data:")
         print(f"  Bind matrices shape: {skin_data.Inverse_bind_matrices.shape}")
         print(f"  Joint indices shape: {skin_data.Joints.shape}")
 
         # Check first few vertices
-        print(f"\nFirst 3 vertices:")
+        print("\nFirst 3 vertices:")
         for i in range(min(3, skinnedMesh.Vertices.shape[0])):
             print(f"  Vertex {i}: {skinnedMesh.Vertices[i]}")
             print(f"    Skin indices: {skinnedMesh.SkinIndices[i]}")
@@ -633,7 +633,7 @@ class GLB(ModelImporter):
             print(f"    Weight sum: {np.sum(skinnedMesh.SkinWeights[i])}")
 
         # Check joint names
-        print(f"\nJoint Names (first 10):")
+        print("\nJoint Names (first 10):")
         for i, name in enumerate(glb.JointNames[:10]):
             print(f"  {i}: {name}")
 

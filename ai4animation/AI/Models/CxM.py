@@ -2,13 +2,14 @@
 
 import numpy as np
 import torch
-import torch.nn as nn
+from sklearn.decomposition import PCA
+from torch import nn
+
 from ai4animation.AI.Library import Losses
 from ai4animation.AI.Library.Blocks import FiLMLinearBlock, LinearBlock, SpaceTimeBlock
 from ai4animation.AI.Library.Layers import CodebookLayer
 from ai4animation.AI.Library.Statistics import RunningStatistics
-from ai4animation.AI.Models import CategoricalEncoderDecoder, MultiLayerPerceptron
-from sklearn.decomposition import PCA
+from ai4animation.AI.Models import CategoricalEncoderDecoder
 
 
 def plot_pca(ax, tensor, title, labels=None):
@@ -38,7 +39,7 @@ class Model(nn.Module):
         prior,
         sampler,
     ):
-        super(Model, self).__init__()
+        super().__init__()
         self.Prior = prior
         self.Sampler = sampler
 
@@ -61,7 +62,7 @@ class Model(nn.Module):
 # Codebook Matching Prior
 class Prior(nn.Module):
     def __init__(self, encoder, decoder, codebook):
-        super(Prior, self).__init__()
+        super().__init__()
         self.FeatureStatistics = RunningStatistics(decoder.output_dim())
         self.Encoder = encoder
         self.Decoder = decoder
@@ -132,7 +133,7 @@ class Prior(nn.Module):
 # Codebook Matching Sampler
 class Sampler(nn.Module):
     def __init__(self, estimator, denoiser, codebook):
-        super(Sampler, self).__init__()
+        super().__init__()
         self.FeatureStatistics = RunningStatistics(estimator.input_dim())
         self.Estimator = estimator
         self.Denoiser = denoiser
@@ -201,7 +202,7 @@ class VanillaPrior(Prior):
         codebook_classes,
         dropout,
     ):
-        super(VanillaPrior, self).__init__(
+        super().__init__(
             encoder=LinearBlock(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -229,7 +230,7 @@ class MotionPrior(Prior):
         codebook_classes,
         dropout,
     ):
-        super(MotionPrior, self).__init__(
+        super().__init__(
             encoder=SpaceTimeBlock(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -288,7 +289,7 @@ class VanillaSampler(Sampler):
         codebook_classes,
         dropout,
     ):
-        super(VanillaSampler, self).__init__(
+        super().__init__(
             estimator=LinearBlock(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -315,7 +316,7 @@ class MotionSampler(Sampler):
         codebook_classes,
         dropout,
     ):
-        super(MotionSampler, self).__init__(
+        super().__init__(
             estimator=CategoricalEncoderDecoder.Model(
                 feature_dim,
                 codebook_channels * codebook_classes,
@@ -357,7 +358,7 @@ class VanillaModel(Model):
         codebook_classes,
         dropout,
     ):
-        super(VanillaModel, self).__init__(
+        super().__init__(
             prior=VanillaPrior(
                 output_dim,
                 encoder_dim,
@@ -393,7 +394,7 @@ class MotionModel(Model):
         codebook_classes,
         dropout,
     ):
-        super(MotionModel, self).__init__(
+        super().__init__(
             prior=MotionPrior(
                 sequence_length,
                 output_dim,
@@ -487,7 +488,7 @@ def ToyExample1():
     )
     for e in range(1, EPOCH_COUNT + 1, 1):
         print("Epoch", e)
-        for i in range(0, BATCH_COUNT):
+        for i in range(BATCH_COUNT):
             print("Progress", round(100 * i / BATCH_COUNT, 2), "%", end="\r")
 
             X, Y = generate_data(BATCH_SIZE, min, max)
@@ -608,7 +609,7 @@ def ToyExample2():
     plots_global = plt.subplots(1, 3, figsize=(9, 3))
     for e in range(1, EPOCH_COUNT + 1, 1):
         print("Epoch", e)
-        for i in range(0, BATCH_COUNT):
+        for i in range(BATCH_COUNT):
             print("Progress", round(100 * i / BATCH_COUNT, 2), "%", end="\r")
 
             X, Y = generate_data(BATCH_SIZE, noise)
@@ -675,6 +676,7 @@ def ToyExample2():
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
     from ai4animation import Generators, Plotting
 
     # ToyExample1()

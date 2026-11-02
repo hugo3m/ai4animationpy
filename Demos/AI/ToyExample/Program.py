@@ -2,6 +2,7 @@
 
 import numpy as np
 import torch
+
 from ai4animation import (
     AI4Animation,
     CosineAnnealingOptimizer,
@@ -42,7 +43,7 @@ class Program:
     def Update(self):
         try:
             next(self.Trainer)
-        except StopIteration as e:
+        except StopIteration:
             pass
 
     def Training(self):

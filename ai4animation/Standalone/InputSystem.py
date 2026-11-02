@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pyray as pr
 import raylib as rl
+
 from ai4animation import AI4Animation, Utility
 from ai4animation.Math import Rotation, Vector3
 

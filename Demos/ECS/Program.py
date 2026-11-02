@@ -1,6 +1,6 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
-from ai4animation import AI4Animation, Component, MeshRenderer, Tensor, Time, Vector3
+from ai4animation import AI4Animation, Component, Tensor, Time, Vector3
 
 
 class Program:

@@ -14,14 +14,14 @@ from . import (
 )
 
 __all__ = [
+    "ContactModule",
+    "Dataset",
+    "GuidanceModule",
     "Hierarchy",
+    "Module",
     "Motion",
+    "MotionModule",
+    "RootModule",
     "Skeleton",
     "TimeSeries",
-    "Module",
-    "RootModule",
-    "MotionModule",
-    "ContactModule",
-    "GuidanceModule",
-    "Dataset",
 ]

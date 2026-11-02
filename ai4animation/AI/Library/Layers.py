@@ -1,10 +1,11 @@
 # (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-from ai4animation.AI.Library import Defaults, Manifolds
 from einops import rearrange
+from torch import nn
+
+from ai4animation.AI.Library import Defaults, Manifolds
 
 
 class LinearLayer(torch.nn.Module):
@@ -15,7 +16,7 @@ class LinearLayer(torch.nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(LinearLayer, self).__init__()
+        super().__init__()
 
         self.InputSize = input_size
         self.OutputSize = output_size
@@ -43,7 +44,7 @@ class FiLMLayer(torch.nn.Module):
         input_size,
         film_size,
     ):
-        super(FiLMLayer, self).__init__()
+        super().__init__()
 
         self.InputSize = film_size
         self.OutputSize = input_size
@@ -73,7 +74,7 @@ class FiLMLinearLayer(torch.nn.Module):
         dropout=Defaults.Dropout,
         activation=Defaults.Activation,
     ):
-        super(FiLMLinearLayer, self).__init__()
+        super().__init__()
 
         self.FiLM = FiLMLayer(input_size, film_size)
         self.Linear = LinearLayer(input_size, output_size, dropout, activation)
@@ -95,7 +96,7 @@ class FiLMLinearLayer(torch.nn.Module):
 
 class VariationalLayer(torch.nn.Module):
     def __init__(self, samples_size):
-        super(VariationalLayer, self).__init__()
+        super().__init__()
 
         self.SamplesSize = samples_size
 
@@ -122,7 +123,7 @@ class VariationalLayer(torch.nn.Module):
 
 class CodebookLayer(torch.nn.Module):
     def __init__(self, channels, classes):
-        super(CodebookLayer, self).__init__()
+        super().__init__()
 
         self.Channels = channels
         self.Classes = classes

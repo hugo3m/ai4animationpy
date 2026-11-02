@@ -2,7 +2,6 @@
 
 import os
 from functools import lru_cache
-from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -13,6 +12,7 @@ def _ensure_fbx_sdk_loaded() -> None:
 
     try:
         from fbx import (
+            IOSROOT,
             FbxAnimLayer,
             FbxAnimStack,
             FbxAxisSystem,
@@ -25,7 +25,6 @@ def _ensure_fbx_sdk_loaded() -> None:
             FbxManager,
             FbxScene,
             FbxTime,
-            IOSROOT,
         )
     except ImportError as exc:
         raise ImportError(
@@ -326,14 +325,14 @@ class FBX(ModelImporter):
         self._extract_all_meshes(flat_nodes, unit_scale, bone_name_to_joint_idx)
 
         skin_joint_node_indices = sorted(skeleton_node_indices)
-        self._skin: Optional[Skin] = None
+        self._skin: Skin | None = None
         if len(skin_joint_node_indices) > 0:
             bind_pose_matrices = self._nodeGlobalMatrices[skin_joint_node_indices]
             joints = np.array(skin_joint_node_indices, dtype=np.int64)
             self._skin = Skin(joints=joints, bind_pose_matrices=bind_pose_matrices)
             print(f"[FBX] Extracted skin with {len(skin_joint_node_indices)} joints")
 
-        self._animation: Optional[Animation] = None
+        self._animation: Animation | None = None
         self._load_animation_data(scene, flat_nodes, num_nodes, unit_scale)
 
         manager.Destroy()
@@ -377,7 +376,7 @@ class FBX(ModelImporter):
                     if bone is not None:
                         skin_cluster_bone_names.add(bone.GetName())
 
-        orig_name_to_indices: Dict[str, List[int]] = {}
+        orig_name_to_indices: dict[str, list[int]] = {}
         for i, (fbx_node, _) in enumerate(flat_nodes):
             orig_name_to_indices.setdefault(fbx_node.GetName(), []).append(i)
 
@@ -420,7 +419,7 @@ class FBX(ModelImporter):
 
     def _build_node_hierarchy(self, flat_nodes, final_names, unit_scale):
         num_nodes = len(flat_nodes)
-        self._nodes: List[Node] = []
+        self._nodes: list[Node] = []
         for i, (fbx_node, parent_idx) in enumerate(flat_nodes):
             m = fbx_node.EvaluateLocalTransform()
             t = m.GetT()
@@ -463,13 +462,13 @@ class FBX(ModelImporter):
 
     def _build_joint_mappings(self, skeleton_node_indices):
         skin_joint_node_indices = sorted(skeleton_node_indices)
-        bone_name_to_joint_idx: Dict[str, int] = {}
+        bone_name_to_joint_idx: dict[str, int] = {}
         for ji, ni in enumerate(skin_joint_node_indices):
             bone_name_to_joint_idx[self._nodeNames[ni]] = ji
         return bone_name_to_joint_idx
 
     def _extract_all_meshes(self, flat_nodes, unit_scale, bone_name_to_joint_idx):
-        self._meshes: List[Mesh] = []
+        self._meshes: list[Mesh] = []
         for fbx_node, _ in flat_nodes:
             mesh = fbx_node.GetMesh()
             if mesh is None:
@@ -574,13 +573,13 @@ class FBX(ModelImporter):
         return os.path.splitext(os.path.basename(self._path))[0]
 
     @property
-    def JointNames(self) -> List[str]:
+    def JointNames(self) -> list[str]:
         if self._skin is None:
             return self._nodeNames
         return [self._nodeNames[i] for i in self._skin.Joints]
 
     @property
-    def JointParents(self) -> List[str]:
+    def JointParents(self) -> list[str]:
         if self._skin is None:
             return self._nodeParentNames
         return [self._nodeParentNames[i] for i in self._skin.Joints]
@@ -592,11 +591,11 @@ class FBX(ModelImporter):
         return self._nodeGlobalMatrices[self._skin.Joints]
 
     @property
-    def Meshes(self) -> List[Mesh]:
+    def Meshes(self) -> list[Mesh]:
         return self._meshes
 
     @property
-    def Skin(self) -> Optional[Skin]:
+    def Skin(self) -> Skin | None:
         return self._skin
 
     @property

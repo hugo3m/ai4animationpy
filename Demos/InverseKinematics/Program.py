@@ -50,7 +50,6 @@ class Program:
 
     def GUI(self):
         self.Target.DrawHandle()
-        pass
 
 
 def main():

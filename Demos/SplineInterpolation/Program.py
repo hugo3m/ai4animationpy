@@ -7,7 +7,6 @@ from ai4animation import (
     Spline,
     Tensor,
     Transform,
-    Utility,
     Vector3,
 )
 
