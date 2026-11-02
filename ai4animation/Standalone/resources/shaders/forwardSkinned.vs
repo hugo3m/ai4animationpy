@@ -7,8 +7,7 @@ in vec4 vertexColor;
 in vec4 vertexBoneIds;
 in vec4 vertexBoneWeights;
 
-// macOS OpenGL 4.1 (Metal compatibility) limits uniform arrays to ~128 mat4
-#define MAX_BONE_NUM 128
+#define MAX_BONE_NUM 254
 uniform mat4 boneMatrices[MAX_BONE_NUM];
 
 uniform mat4 mvp;

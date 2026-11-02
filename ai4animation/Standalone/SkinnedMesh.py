@@ -123,7 +123,8 @@ class SkinnedMesh:
         if boneCount > MAX_BONES_SUPPORTED:
             raise ValueError(
                 f"Character has {boneCount} bones, but shader only supports {MAX_BONES_SUPPORTED}. "
-                f"Increase MAX_BONE_NUM in skinnedShadow.vs and skinnedBasic.vs"
+                f"Increase MAX_BONE_NUM in forwardSkinned.vs, forwardSkinnedShadow.vs, "
+                f"skinnedShadow.vs and skinnedBasic.vs"
             )
 
         for mesh in self.SkinnedMeshes:

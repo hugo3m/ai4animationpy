@@ -4,7 +4,7 @@ in vec3 vertexPosition;
 in vec4 vertexBoneIds;
 in vec4 vertexBoneWeights;
 
-#define MAX_BONE_NUM 128
+#define MAX_BONE_NUM 254
 uniform mat4 boneMatrices[MAX_BONE_NUM];
 
 uniform mat4 mvp;
