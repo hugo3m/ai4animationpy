@@ -56,12 +56,8 @@ class Path:
         if points.shape[0] == 0:
             return
 
-        AI4Animation.Draw.Cube(
-            points[:1], size=0.15, color=AI4Animation.Color.BLUE
-        )
-        AI4Animation.Draw.Cube(
-            points[-1:], size=0.15, color=AI4Animation.Color.BLUE
-        )
+        AI4Animation.Draw.Cube(points[:1], size=0.15, color=AI4Animation.Color.BLUE)
+        AI4Animation.Draw.Cube(points[-1:], size=0.15, color=AI4Animation.Color.BLUE)
         if points.shape[0] > 1:
             AI4Animation.Draw.Cylinder(
                 points[:-1],
@@ -235,12 +231,16 @@ class PathPlanner3D:
             self.Generate()
 
     def SetSize(self, size, regenerate=True):
-        self.Size = Tensor.Maximum(Tensor.Create(size).reshape(3), Vector3.One() * Tensor.EPS)
+        self.Size = Tensor.Maximum(
+            Tensor.Create(size).reshape(3), Vector3.One() * Tensor.EPS
+        )
         if regenerate:
             self.Generate()
 
     def SetResolution(self, resolution, regenerate=True):
-        self.Resolution = Tensor.Maximum(Tensor.Create(resolution).reshape(3), Vector3.One())
+        self.Resolution = Tensor.Maximum(
+            Tensor.Create(resolution).reshape(3), Vector3.One()
+        )
         if regenerate:
             self.Generate()
 

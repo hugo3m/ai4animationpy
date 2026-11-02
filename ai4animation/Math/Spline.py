@@ -3,6 +3,7 @@
 
 from ai4animation.Math import Quaternion, Rotation, Tensor, Transform, Vector3
 
+
 def _CatmullRom(positions, percentages):
     positions = Tensor.Create(positions).reshape(-1, 3)
     percentages = Tensor.Clamp(Tensor.Create(percentages).reshape(-1), 0.0, 1.0)
@@ -32,6 +33,7 @@ def _CatmullRom(positions, percentages):
         + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3
     )
 
+
 def _Percentages(resolution):
     resolution = int(resolution)
     if resolution < 1:
@@ -46,6 +48,7 @@ def GetPointOnSpline(positions, percentage):
         return _CatmullRom(positions, [percentage])[0]
     return _CatmullRom(positions, percentage)
 
+
 def GetPointOnSplineRotation(rotations, percentage):
     forwards = Rotation.GetAxisZ(rotations)
     ups = Rotation.GetAxisY(rotations)
@@ -54,10 +57,12 @@ def GetPointOnSplineRotation(rotations, percentage):
         Vector3.Normalize(GetPointOnSpline(ups, percentage)),
     )
 
+
 def GetPointOnSplineQuaternion(quaternions, percentage):
     return Quaternion.FromMatrix(
         GetPointOnSplineRotation(Quaternion.ToMatrix(quaternions), percentage)
     )
+
 
 def GetPointOnSplineTransform(transforms, percentage):
     return Transform.TR(
@@ -65,8 +70,10 @@ def GetPointOnSplineTransform(transforms, percentage):
         GetPointOnSplineRotation(Transform.GetRotation(transforms), percentage),
     )
 
+
 def GetPointsOnSpline(positions, resolution):
     return _CatmullRom(positions, _Percentages(resolution))
+
 
 def GetPointsOnSplineTransform(transforms, resolution):
     return Transform.TR(
@@ -74,10 +81,12 @@ def GetPointsOnSplineTransform(transforms, resolution):
         GetPointsOnSplineRotation(Transform.GetRotation(transforms), resolution),
     )
 
+
 def GetPointsOnSplineQuaternion(quaternions, resolution):
     return Quaternion.FromMatrix(
         GetPointsOnSplineRotation(Quaternion.ToMatrix(quaternions), resolution)
     )
+
 
 def GetPointsOnSplineRotation(rotations, resolution):
     percentages = _Percentages(resolution)

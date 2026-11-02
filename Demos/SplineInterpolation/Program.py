@@ -70,16 +70,28 @@ class Program:
         )
         sample = Spline.GetPointOnSplineTransform(control, self.Percentage.GetValue())
 
-        AI4Animation.Draw.Cylinder(positions[:-1], positions[1:], 0.02, 0.02, color=AI4Animation.Color.RED)
+        AI4Animation.Draw.Cylinder(
+            positions[:-1], positions[1:], 0.02, 0.02, color=AI4Animation.Color.RED
+        )
         AI4Animation.Draw.Sphere(positions, size=0.1, color=AI4Animation.Color.RED)
         for i in range(len(self.ControlPoints)):
             AI4Animation.Draw.Transform(control[i], size=1.0)
 
-        AI4Animation.Draw.Cylinder(curve[:-1], curve[1:], 0.035, 0.035, color=AI4Animation.Color.GREEN)
-        AI4Animation.Draw.Sphere(Transform.GetPosition(spline), size=0.06, color=AI4Animation.Color.MAGENTA)
+        AI4Animation.Draw.Cylinder(
+            curve[:-1], curve[1:], 0.035, 0.035, color=AI4Animation.Color.GREEN
+        )
+        AI4Animation.Draw.Sphere(
+            Transform.GetPosition(spline), size=0.06, color=AI4Animation.Color.MAGENTA
+        )
 
-        AI4Animation.Draw.Cube(Transform.GetPosition(sample), size=0.125, color=AI4Animation.Color.BLUE)
-        AI4Animation.Draw.Vector(Transform.GetPosition(sample), 0.5 * Transform.GetAxisZ(sample), color=AI4Animation.Color.MAGENTA)
+        AI4Animation.Draw.Cube(
+            Transform.GetPosition(sample), size=0.125, color=AI4Animation.Color.BLUE
+        )
+        AI4Animation.Draw.Vector(
+            Transform.GetPosition(sample),
+            0.5 * Transform.GetAxisZ(sample),
+            color=AI4Animation.Color.MAGENTA,
+        )
 
     def GUI(self):
         self.Percentage.GUI()
