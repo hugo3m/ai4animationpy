@@ -167,12 +167,16 @@ class Program:
         AI4Animation.Standalone.Camera.SetTarget(self.Actor.Entity)
 
         self.Model = torch.load(
-            os.path.join(SCRIPT_DIR, "Network.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "Network.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.Model.eval()
 
         self.PostProcessor = torch.load(
-            os.path.join(SCRIPT_DIR, "PostProcessor.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "PostProcessor.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.PostProcessor.eval()
 

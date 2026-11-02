@@ -4,6 +4,7 @@
 
 from enum import Enum
 
+from dataclasses import dataclass
 import numpy as np
 import torch
 
@@ -15,26 +16,22 @@ class Backend(Enum):
     PyTorch = 1
 
 
-class Device(Enum):
-    CPU = -1
-    GPU1 = 0
-    GPU2 = 1
-    GPU3 = 2
-    GPU4 = 3
+@dataclass
+class Device:
+    label: str
+    index: int
 
 
-TensorDevice = Device.GPU1 if torch.cuda.is_available() else Device.CPU
+class DeviceEnum(Enum):
+    CPU = Device(label="cpu", index=0)
+    CUDA_0 = Device(label="cuda", index=0)
+    MPS = Device(label="mps", index=0)
+
+
+TensorDevice: DeviceEnum = (
+    DeviceEnum.CUDA_0 if torch.cuda.is_available() else DeviceEnum.CPU
+)
 TensorBackend = Backend.NumPy
-
-
-def SetDevice(device):
-    global TensorDevice
-    TensorDevice = device
-
-
-def SetBackend(backend):
-    global TensorBackend
-    TensorBackend = backend
 
 
 def GetBackend(tensor):
@@ -76,12 +73,13 @@ def BroadcastTo(tensor, shape):
 
 
 def ToDevice(tensor):
-    if TensorDevice == Device.CPU or isinstance(tensor, np.ndarray):
+    if TensorDevice == DeviceEnum.CPU or isinstance(tensor, np.ndarray):
         return tensor
-    assert TensorDevice.value < torch.cuda.device_count(), (
-        f"{TensorDevice} not available"
-    )
-    return tensor.to(torch.device("cuda", TensorDevice.value))
+    if TensorDevice in [DeviceEnum.CUDA_0]:
+        assert TensorDevice.value.index < torch.cuda.device_count(), (
+            f"{TensorDevice} not available"
+        )
+    return tensor.to(torch.device(TensorDevice.value.label, TensorDevice.value.index))
 
 
 def ToNumPy(tensor):

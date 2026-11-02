@@ -39,11 +39,15 @@ class MotionController:
             Actor, os.path.join(ASSETS_PATH, "Model.glb"), Definitions.FULL_BODY_NAMES
         )
         self.Model = torch.load(
-            os.path.join(SCRIPT_DIR, "Models/Network.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "Models/Network.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.Model.eval()
         self.PostProcessor = torch.load(
-            os.path.join(SCRIPT_DIR, "Models/PostProcessor.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "Models/PostProcessor.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.PostProcessor.eval()
         self.SequenceWindow = 0.5

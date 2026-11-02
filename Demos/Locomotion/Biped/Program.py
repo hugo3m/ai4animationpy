@@ -56,12 +56,16 @@ class Program:
         AI4Animation.Standalone.Camera.SetTarget(self.Actor.Entity)
 
         self.Model = torch.load(
-            os.path.join(SCRIPT_DIR, "Network.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "Network.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.Model.eval()
 
         self.PostProcessor = torch.load(
-            os.path.join(SCRIPT_DIR, "PostProcessor.pt"), weights_only=False
+            os.path.join(SCRIPT_DIR, "PostProcessor.pt"),
+            weights_only=False,
+            map_location=Tensor.TensorDevice.value.label,
         )
         self.PostProcessor.eval()
 
@@ -85,9 +89,9 @@ class Program:
             self.Actor.Skeleton.GetPositions().copy(),
         )
         self.GuidanceTemplates = {}
-        directory = "Guidances"
+        directory = SCRIPT_DIR / "Guidances"
         for path in sorted(os.listdir(directory)):
-            with np.load(directory + "/" + path, allow_pickle=True) as data:
+            with np.load(directory / path, allow_pickle=True) as data:
                 id = Path(path).stem
                 names = data["Names"]
                 positions = data["Positions"]
