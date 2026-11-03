@@ -185,7 +185,7 @@ class AuthoringProgram:
             self.MotionController.RootControl.Draw()
         if self.DrawGuidanceControl.Active:
             self.MotionController.GuidanceControl.DrawLegacy(
-                self.MotionController.Actor
+                self.MotionController.Actor.Skeleton
             )
         if (
             self.DrawSequences.Active

@@ -513,7 +513,7 @@ class Program:
         if self.DrawRootControl.Active:
             self.RootControl.Draw()
         if self.DrawGuidanceControl.Active:
-            self.GuidanceControl.DrawLegacy(self.Actor)
+            self.GuidanceControl.DrawLegacy(self.Actor.Skeleton)
         if self.DrawPreviousSequence.Active:
             self.Previous.Draw(self.Actor.Skeleton, AI4Animation.Color.RED)
         if self.DrawCurrentSequence.Active:
